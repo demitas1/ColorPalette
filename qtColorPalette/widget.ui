@@ -11,9 +11,27 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Widget</string>
+   <string>My App</string>
   </property>
+  <widget class="MyPalette" name="widget1" native="true">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>300</width>
+     <height>400</height>
+    </rect>
+   </property>
+  </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>MyPalette</class>
+   <extends>QWidget</extends>
+   <header>mypalette.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

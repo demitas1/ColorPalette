@@ -10,7 +10,7 @@ Widget::Widget(QWidget *parent)
 {
     ui->setupUi(this);
 
-    MyPalette *myPalette = new MyPalette(this);
+    //MyPalette *myPalette = new MyPalette(this);
 }
 
 Widget::~Widget()
