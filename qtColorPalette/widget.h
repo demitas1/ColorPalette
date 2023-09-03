@@ -14,6 +14,8 @@ class Widget : public QWidget
 public:
     Widget(QWidget *parent = nullptr);
     ~Widget();
+private slots:
+    void paletteColorPicked();
 
 private:
     Ui::Widget *ui;

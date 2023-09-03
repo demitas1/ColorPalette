@@ -16,6 +16,7 @@ MyPalette::MyPalette(QWidget *parent)
     for (int i = 0; i < 80; i++) {
         this -> mColor << QColor(0, 0, 0);
     }
+    this -> mCurrentColor = QColor(0, 0, 0);
 }
 
 void MyPalette::loadDefaultColors()
@@ -26,6 +27,12 @@ void MyPalette::loadDefaultColors()
         const int r = int(255 * i / 80);
         this -> mColor << QColor(r, 255 - r, 255 - r);
     }
+    this -> mCurrentColor = this -> mColor[0];
+}
+
+QColor MyPalette::currentColor()
+{
+    return this -> mCurrentColor;
 }
 
 void MyPalette::paintEvent(QPaintEvent *event)
@@ -65,14 +72,19 @@ void MyPalette::mousePressEvent(QMouseEvent *ev)
     const int i = int(p.x() / swW);
     const int j = int(p.y() / swH);
 
-    const bool bounds = i < 8 || j < 10;
+    const bool inBound = i < 8 || j < 10;
     const bool onBorder = (p.x() % swW == 0) || (p.y() % swH == 0);
     const int indexColor = i + j * 8;
 
     qInfo() << "mouse down: " << ev -> button()
             << " at " << i << "," << j;
-    QColor c = this -> mColor[indexColor];
-    qInfo() << c;
+    if (inBound && (! onBorder)) {
+        QColor c = this -> mColor[indexColor];
+        qInfo() << c;
+        this -> mCurrentColor = c;
+
+        emit colorPicked();
+    }
 }
 
 QSize MyPalette::sizeHint() const
