@@ -1,4 +1,4 @@
-#include "mypalette.h"
+#include "mypalette/mypalette.h"
 #include <QPainter>
 #include <QPen>
 #include <QBrush>
