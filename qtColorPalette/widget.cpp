@@ -10,7 +10,9 @@ Widget::Widget(QWidget *parent)
 {
     ui->setupUi(this);
 
-    //MyPalette *myPalette = new MyPalette(this);
+    ui -> currentColor -> setStyleSheet("background-color: #800000;");
+    ui -> colorInfo -> setText("#800000");
+    ui -> colorPalette -> loadDefaultColors();
 }
 
 Widget::~Widget()
