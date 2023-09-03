@@ -19,13 +19,14 @@ set(PROJECT_SOURCES
         widget.cpp
         widget.h
         widget.ui
+        mypalette/mypalette.h mypalette/mypalette.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(qtColorPalette
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        mypalette.h mypalette.cpp
+        mypalette/mypalette.h mypalette/mypalette.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET qtColorPalette APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

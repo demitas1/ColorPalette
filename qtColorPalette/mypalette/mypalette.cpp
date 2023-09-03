@@ -12,33 +12,33 @@ MyPalette::MyPalette(QWidget *parent)
         QSizePolicy::Preferred,
         QSizePolicy::Preferred));
 
-    this -> mSwatch = QRect(0, 0, 30, 20);
+    mSwatch = QRect(0, 0, 30, 20);
     for (int i = 0; i < 80; i++) {
-        this -> mColor << QColor(0, 0, 0);
+        mColor << QColor(0, 0, 0);
     }
-    this -> mCurrentColor = QColor(0, 0, 0);
+    mCurrentColor = QColor(0, 0, 0);
 }
 
 void MyPalette::loadDefaultColors()
 {
     qInfo() << "load default colors.";
-    this -> mColor.clear();
+    mColor.clear();
     for (int i = 0; i < 80; i++) {
         const int r = int(255 * i / 80);
-        this -> mColor << QColor(r, 255 - r, 255 - r);
+        mColor << QColor(r, 255 - r, 255 - r);
     }
-    this -> mCurrentColor = this -> mColor[0];
+    mCurrentColor = mColor[0];
 }
 
 QColor MyPalette::currentColor()
 {
-    return this -> mCurrentColor;
+    return mCurrentColor;
 }
 
 void MyPalette::paintEvent(QPaintEvent *event)
 {
-    const int swW = this -> mSwatch.width();
-    const int swH = this -> mSwatch.height();
+    const int swW = mSwatch.width();
+    const int swH = mSwatch.height();
 
     QPen pen;
     pen.setWidth(1);
@@ -48,7 +48,7 @@ void MyPalette::paintEvent(QPaintEvent *event)
 
     painter.setPen(pen);
     painter.setBrush(QColor(0, 0, 40));
-    painter.drawRect(this -> rect());
+    painter.drawRect(rect());
 
     painter.setPen(pen);
     painter.setBrush(Qt::gray);
@@ -56,7 +56,7 @@ void MyPalette::paintEvent(QPaintEvent *event)
 
     for (int i = 0; i < 8; ++i) {
         for (int j = 0; j < 10; j++) {
-            const QColor c = this -> mColor[i + j * 8];
+            const QColor c = mColor[i + j * 8];
             painter.setBrush(c);
             painter.drawRect(QRectF(swW * i, swH * j, swW, swH));
         }
@@ -65,8 +65,8 @@ void MyPalette::paintEvent(QPaintEvent *event)
 
 void MyPalette::mousePressEvent(QMouseEvent *ev)
 {
-    const int swW = this -> mSwatch.width();
-    const int swH = this -> mSwatch.height();
+    const int swW = mSwatch.width();
+    const int swH = mSwatch.height();
 
     QPoint p = ev -> pos();
     const int i = int(p.x() / swW);
@@ -79,9 +79,9 @@ void MyPalette::mousePressEvent(QMouseEvent *ev)
     qInfo() << "mouse down: " << ev -> button()
             << " at " << i << "," << j;
     if (inBound && (! onBorder)) {
-        QColor c = this -> mColor[indexColor];
+        QColor c = mColor[indexColor];
         qInfo() << c;
-        this -> mCurrentColor = c;
+        mCurrentColor = c;
 
         emit colorPicked();
     }

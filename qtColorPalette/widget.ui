@@ -57,7 +57,7 @@
   <customwidget>
    <class>MyPalette</class>
    <extends>QWidget</extends>
-   <header>mypalette.h</header>
+   <header>mypalette/mypalette.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
