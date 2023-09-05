@@ -1,5 +1,6 @@
 #include "widget.h"
 #include "mypalette/mypalette.h"
+#include "current_color/current_color.h"
 #include "./ui_widget.h"
 
 
@@ -9,8 +10,6 @@ Widget::Widget(QWidget *parent)
 {
     ui->setupUi(this);
 
-    ui -> currentColor -> setStyleSheet("background-color: #800000;");
-    ui -> colorInfo -> setText("#800000");
     ui -> colorPalette -> loadDefaultColors();
 
     connect(
@@ -29,10 +28,8 @@ Widget::~Widget()
 
 void Widget::paletteColorPicked()
 {
+    // pick a color from palette to display in current color
     QColor c = ui -> colorPalette -> currentColor();
     qInfo() << "palette color is picked." << c.name();
-
-    ui -> currentColor -> setStyleSheet(
-        QString("background-color: %1").arg(c.name()));
-    ui -> colorInfo -> setText(c.name());
+    ui -> currentColor2 -> setForegroundColor(c);
 }

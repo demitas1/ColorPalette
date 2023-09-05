@@ -27,6 +27,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
         mypalette/mypalette.h mypalette/mypalette.cpp
+
+        current_color/current_color.h current_color/current_color.cpp current_color/current_color.ui
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET qtColorPalette APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
