@@ -39,6 +39,19 @@
     <string notr="true">background-color: gray;</string>
    </property>
   </widget>
+  <widget class="ColorPicker" name="colorPicker" native="true">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>320</y>
+     <width>240</width>
+     <height>240</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: gray;</string>
+   </property>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>
@@ -51,6 +64,12 @@
    <class>CurrentColor</class>
    <extends>QWidget</extends>
    <header>current_color/current_color.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ColorPicker</class>
+   <extends>QWidget</extends>
+   <header>color_picker/color_picker.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
