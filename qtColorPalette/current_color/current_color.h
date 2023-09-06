@@ -16,6 +16,7 @@ public:
     ~CurrentColor();
 
     void setForegroundColor(QColor c);
+    void setBackgroundColor(QColor c);
 
 private:
     Ui::CurrentColor *ui;

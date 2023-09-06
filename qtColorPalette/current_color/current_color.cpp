@@ -8,7 +8,10 @@ CurrentColor::CurrentColor(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CurrentColor)
 {
-    ui->setupUi(this);
+    ui -> setupUi(this);
+
+    // arrange z-order
+    ui -> backgroundColor -> stackUnder(ui -> foregroundColor);
 }
 
 CurrentColor::~CurrentColor()
@@ -22,4 +25,11 @@ void CurrentColor::setForegroundColor(QColor c)
     ui -> foregroundColor -> setStyleSheet(
         QString("background-color: %1").arg(c.name()));
     ui -> foregroundColorName -> setText(c.name());
+}
+
+void CurrentColor::setBackgroundColor(QColor c)
+{
+    qInfo() << "foreground color: " << c;
+    ui -> backgroundColor -> setStyleSheet(
+        QString("background-color: %1").arg(c.name()));
 }

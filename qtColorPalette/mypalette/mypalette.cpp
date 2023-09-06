@@ -35,6 +35,11 @@ QColor MyPalette::currentColor()
     return mCurrentColor;
 }
 
+QColor MyPalette::currentBackgroundColor()
+{
+    return mCurrentBackgroundColor;
+}
+
 void MyPalette::paintEvent(QPaintEvent *event)
 {
     const int swW = mSwatch.width();
@@ -65,6 +70,17 @@ void MyPalette::paintEvent(QPaintEvent *event)
 
 void MyPalette::mousePressEvent(QMouseEvent *ev)
 {
+    enum ColorTo {foreground, background};
+    ColorTo colorTo;
+
+    if (ev -> button() == Qt::LeftButton) {
+        colorTo = foreground;
+    } else if (ev -> button() == Qt::RightButton) {
+        colorTo = background;
+    } else {
+        return;
+    }
+
     const int swW = mSwatch.width();
     const int swH = mSwatch.height();
 
@@ -81,9 +97,14 @@ void MyPalette::mousePressEvent(QMouseEvent *ev)
     if (inBound && (! onBorder)) {
         QColor c = mColor[indexColor];
         qInfo() << c;
-        mCurrentColor = c;
 
-        emit colorPicked();
+        if (colorTo == foreground) {
+            mCurrentColor = c;
+            emit colorPicked();
+        } else {
+            mCurrentBackgroundColor = c;
+            emit backgroundColorPicked();
+        }
     }
 }
 

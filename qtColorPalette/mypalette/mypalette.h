@@ -15,14 +15,17 @@ private:
     QRect mSwatch;
     QList<QColor> mColor;
     QColor mCurrentColor;
+    QColor mCurrentBackgroundColor;
 
 public:
     explicit MyPalette(QWidget *parent = nullptr);
     void loadDefaultColors(void);
     QColor currentColor(void);
+    QColor currentBackgroundColor(void);
 
 signals:
     void colorPicked();
+    void backgroundColorPicked();
 
     // QWidget interface
 protected:

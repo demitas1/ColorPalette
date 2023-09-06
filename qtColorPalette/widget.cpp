@@ -8,7 +8,7 @@ Widget::Widget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Widget)
 {
-    ui->setupUi(this);
+    ui -> setupUi(this);
 
     ui -> colorPalette -> loadDefaultColors();
 
@@ -18,6 +18,14 @@ Widget::Widget(QWidget *parent)
         this,
         [=] () {
             paletteColorPicked();
+        });
+
+    connect(
+        ui -> colorPalette,
+        &MyPalette::backgroundColorPicked,
+        this,
+        [=] () {
+            paletteBackgroundColorPicked();
         });
 }
 
@@ -32,4 +40,12 @@ void Widget::paletteColorPicked()
     QColor c = ui -> colorPalette -> currentColor();
     qInfo() << "palette color is picked." << c.name();
     ui -> currentColor2 -> setForegroundColor(c);
+}
+
+void Widget::paletteBackgroundColorPicked()
+{
+    // pick a color from palette to display in current color
+    QColor c = ui -> colorPalette -> currentBackgroundColor();
+    qInfo() << "palette color is picked." << c.name();
+    ui -> currentColor2 -> setBackgroundColor(c);
 }

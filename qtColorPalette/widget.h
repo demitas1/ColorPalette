@@ -17,6 +17,7 @@ public:
 
 private slots:
     void paletteColorPicked();
+    void paletteBackgroundColorPicked();
 
 private:
     Ui::Widget *ui;
