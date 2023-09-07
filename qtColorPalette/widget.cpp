@@ -40,6 +40,9 @@ void Widget::paletteColorPicked()
     QColor c = ui -> colorPalette -> currentColor();
     qInfo() << "palette color is picked." << c.name();
     ui -> currentColor2 -> setForegroundColor(c);
+
+    // test of color picker
+    ui -> colorPicker -> setColor(c);
 }
 
 void Widget::paletteBackgroundColorPicked()

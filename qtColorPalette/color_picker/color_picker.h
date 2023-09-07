@@ -11,12 +11,24 @@ class ColorPicker : public QWidget
 {
     Q_OBJECT
 
+private:
+    Ui::ColorPicker *ui;
+    QColor _color;
+    float _colorHue;
+    float _colorSat;
+    float _colorVal;
+
 public:
     explicit ColorPicker(QWidget *parent = nullptr);
     ~ColorPicker();
 
-private:
-    Ui::ColorPicker *ui;
+    // getter
+    QColor color()   const { return _color; };
+    float colorHue() const { return _colorHue; };
+    float colorSat() const { return _colorSat; };
+    float colorVal() const { return _colorVal; };
+
+    void setColor(QColor c);
 
     // QWidget interface
 protected:
