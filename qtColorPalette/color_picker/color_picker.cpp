@@ -1,6 +1,7 @@
 #include <QPainter>
 #include <QPen>
 #include <QBrush>
+#include <QLinearGradient>
 #include <QConicalGradient>
 #include <QtMath>
 #include <QDebug>
@@ -112,6 +113,8 @@ void ColorPicker::paintEvent(QPaintEvent *event)
     QPainter painter(this);
     QColor colorBack = QColor(48, 48, 48, 255);
 
+    painter.setRenderHint(QPainter::Antialiasing);
+
     painter.setPen(QPen(colorBack));
     painter.setBrush(colorBack);
     painter.setCompositionMode(QPainter::CompositionMode_Source);
@@ -146,13 +149,38 @@ void ColorPicker::paintEvent(QPaintEvent *event)
     painter.setBrush(Qt::white);
     painter.drawLine(pHueInner, pHueOuter);
 
-    // draw sat/val triangle
+    // sat/val triangle
     QPointF v0 = pHueInner;
     QPointF v1 = rect().center() + pointPolar(radiusInner, radHue + PI * 2 / 3);
     QPointF v2 = rect().center() + pointPolar(radiusInner, radHue + PI * 4 / 3);
+
+    // draw sat/val triangle edges
+    // NOTE: every point on v1~v2 edge is chroma-zero gray
+    QLinearGradient gradEdge01 = QLinearGradient(v0, v1);
+    QLinearGradient gradEdge02 = QLinearGradient(v0, v2);
+    QLinearGradient gradEdge12 = QLinearGradient(v1, v2);
+    QColor c0, c12;
+    c0.setHsvF(_colorHue, 1.0, 1.0);
+    c12.setHsvF(_colorHue, 0.5, 0.5);
+    gradEdge01.setColorAt(0.0, c0);
+    gradEdge01.setColorAt(1.0, Qt::white);
+    gradEdge02.setColorAt(0.0, c0);
+    gradEdge02.setColorAt(1.0, Qt::black);
+    gradEdge12.setColorAt(0.0, Qt::white);
+    gradEdge12.setColorAt(1.0, Qt::black);
+    painter.setPen(QPen(gradEdge01, 2));
+    painter.setBrush(gradEdge01);
+    painter.drawLine(v0, v1);
+    painter.setPen(QPen(gradEdge02, 2));
+    painter.setBrush(gradEdge02);
+    painter.drawLine(v0, v2);
+    painter.setPen(QPen(gradEdge12, 2));
+    painter.setBrush(gradEdge12);
+    painter.drawLine(v1, v2);
+
+    // fill sat/val triangle
     QPolygonF triangle;
     triangle << v0 << v1 << v2;
-
     QRectF bbTriangle = triangle.boundingRect();
     const int bbLeft = qFloor(bbTriangle.left());
     const int bbTop = qFloor(bbTriangle.top());
@@ -161,18 +189,38 @@ void ColorPicker::paintEvent(QPaintEvent *event)
     for (int y = bbTop; y < bbBottom; y++) {
         for (int x = bbLeft; x < bbRight; x++) {
             // TODO: use drawPoints with QList<QPointF>
-            QColor c0;
-            const QPointF p = QPointF(x,  y);
+            QColor c;
+            const QPointF p = QPointF(x, y);
             const auto st = decompose(p, triangle);
             const float s = st.first;
             const float t = st.second;
             if (inTriangle(s, t)) {
                 // make gradient
-                c0.setHsvF(_colorHue, 1.0 - s, 1.0 - t);
-                painter.setPen(c0);
+                float chroma = 1.0 - (s + t);
+                float saturation;
+                if (1 - t < 1e-9) {
+                    saturation = 0.0;
+                } else {
+                    saturation = qMin(1.0, chroma / (1 - t));
+                }
+                c.setHsvF(_colorHue, saturation, 1 - t);
+                painter.setPen(c);
                 painter.drawPoint(p);
             }
         }
     }
-    // TODO: draw point of current color
+
+    // draw point of current color
+    float s, t;
+    if (_colorVal < 1e-9) {
+        t = 1.0;
+        s = 0.0;
+    } else {
+        t = 1.0 - _colorVal;
+        s = _colorVal * (1.0 - _colorSat);
+    }
+    QPointF vc = v0 + t * (v2 - v0) +  s * (v1 - v0);
+    painter.setPen(QPen(QBrush(Qt::white), 2));
+    painter.setBrush(Qt::NoBrush);
+    painter.drawEllipse(vc, 5, 5);
 }

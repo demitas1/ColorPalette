@@ -11,6 +11,7 @@ Widget::Widget(QWidget *parent)
     ui -> setupUi(this);
 
     ui -> colorPalette -> loadDefaultColors();
+    paletteColorPicked();
 
     connect(
         ui -> colorPalette,
