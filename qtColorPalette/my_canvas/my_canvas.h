@@ -17,6 +17,12 @@ public:
 
 private:
     Ui::MyCanvas *ui;
+    QPixmap	_pix;
+
+    // QWidget interface
+protected:
+    void paintEvent(QPaintEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
 };
 
 #endif // MY_CANVAS_H

@@ -1,6 +1,5 @@
-#include <QGraphicsScene>
-#include <QGraphicsView>
-#include <QGraphicsRectItem>
+#include <QPixmap>
+#include <QPainter>
 #include <QDebug>
 
 #include "my_canvas.h"
@@ -12,23 +11,31 @@ MyCanvas::MyCanvas(QWidget *parent) :
 {
     ui -> setupUi(this);
 
-    auto * scene = new QGraphicsScene(this);
-    scene -> setSceneRect(-300, -300, 600, 600);
-    scene -> setBackgroundBrush(QBrush(Qt::white));
-
-    scene -> addLine(-300, 0, 300, 0);
-    scene -> addLine(0, -300, 0, 300);
-
-    auto * rect = scene -> addRect(10, 10, 100, 100);
-    rect -> setFlag(QGraphicsItem::ItemIsSelectable);
-    rect -> setFlag(QGraphicsItem::ItemIsMovable);
-
-    auto * view = new QGraphicsView(this);
-    view -> setAlignment(Qt::AlignTop | Qt:: AlignLeft);
-    view -> setScene(scene);
+    // initialize canvas pixmap
+    _pix = QPixmap(100, 100);
 }
 
 MyCanvas::~MyCanvas()
 {
     delete ui;
+}
+
+void MyCanvas::paintEvent(QPaintEvent *event)
+{
+    // show current pixmap
+    QPainter painter(this);
+    painter.setPen(Qt::red);
+    painter.drawPixmap(0, 0, _pix);
+}
+
+void MyCanvas::mousePressEvent(QMouseEvent *event)
+{
+    // draw on pixmap
+    QPainter painter(&_pix);
+    painter.setPen(Qt::red);
+    painter.drawPoint(0, 0);
+    painter.drawPoint(1, 0);
+    painter.drawPoint(1, 1);
+    painter.drawPoint(0, 1);
+    repaint();
 }

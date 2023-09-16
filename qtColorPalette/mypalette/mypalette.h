@@ -12,10 +12,11 @@ class MyPalette : public QWidget
     Q_OBJECT
 
 private:
-    QRect mSwatch;
-    QList<QColor> mColor;
-    QColor mCurrentColor;
-    QColor mCurrentBackgroundColor;
+    // TODO: rename private members
+    QRect _Swatch;
+    QList<QColor> _Color;
+    QColor _CurrentColor;
+    QColor _CurrentBackgroundColor;
 
 public:
     explicit MyPalette(QWidget *parent = nullptr);

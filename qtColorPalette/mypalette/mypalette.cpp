@@ -12,38 +12,38 @@ MyPalette::MyPalette(QWidget *parent)
         QSizePolicy::Preferred,
         QSizePolicy::Preferred));
 
-    mSwatch = QRect(0, 0, 30, 20);
+    _Swatch = QRect(0, 0, 30, 20);
     for (int i = 0; i < 80; i++) {
-        mColor << QColor(0, 0, 0);
+        _Color << QColor(0, 0, 0);
     }
-    mCurrentColor = QColor(0, 0, 0);
+    _CurrentColor = QColor(0, 0, 0);
 }
 
 void MyPalette::loadDefaultColors()
 {
     qInfo() << "load default colors.";
-    mColor.clear();
+    _Color.clear();
     for (int i = 0; i < 80; i++) {
         const int r = int(255 * i / 80);
-        mColor << QColor(r, 255 - r, 255 - r);
+        _Color << QColor(r, 255 - r, 255 - r);
     }
-    mCurrentColor = mColor[0];
+    _CurrentColor = _Color[0];
 }
 
 QColor MyPalette::currentColor()
 {
-    return mCurrentColor;
+    return _CurrentColor;
 }
 
 QColor MyPalette::currentBackgroundColor()
 {
-    return mCurrentBackgroundColor;
+    return _CurrentBackgroundColor;
 }
 
 void MyPalette::paintEvent(QPaintEvent *event)
 {
-    const int swW = mSwatch.width();
-    const int swH = mSwatch.height();
+    const int swW = _Swatch.width();
+    const int swH = _Swatch.height();
 
     QPen pen;
     pen.setWidth(1);
@@ -61,7 +61,7 @@ void MyPalette::paintEvent(QPaintEvent *event)
 
     for (int i = 0; i < 8; ++i) {
         for (int j = 0; j < 10; j++) {
-            const QColor c = mColor[i + j * 8];
+            const QColor c = _Color[i + j * 8];
             painter.setBrush(c);
             painter.drawRect(QRectF(swW * i, swH * j, swW, swH));
         }
@@ -81,8 +81,8 @@ void MyPalette::mousePressEvent(QMouseEvent *ev)
         return;
     }
 
-    const int swW = mSwatch.width();
-    const int swH = mSwatch.height();
+    const int swW = _Swatch.width();
+    const int swH = _Swatch.height();
 
     QPoint p = ev -> pos();
     const int i = int(p.x() / swW);
@@ -95,14 +95,14 @@ void MyPalette::mousePressEvent(QMouseEvent *ev)
     qInfo() << "mouse down: " << ev -> button()
             << " at " << i << "," << j;
     if (inBound && (! onBorder)) {
-        QColor c = mColor[indexColor];
+        QColor c = _Color[indexColor];
         qInfo() << c;
 
         if (colorTo == foreground) {
-            mCurrentColor = c;
+            _CurrentColor = c;
             emit colorPicked();
         } else {
-            mCurrentBackgroundColor = c;
+            _CurrentBackgroundColor = c;
             emit backgroundColorPicked();
         }
     }
