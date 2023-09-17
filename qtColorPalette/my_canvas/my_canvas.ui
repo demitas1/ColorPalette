@@ -13,6 +13,16 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <widget class="QGraphicsView" name="graphicsView">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>512</width>
+     <height>512</height>
+    </rect>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

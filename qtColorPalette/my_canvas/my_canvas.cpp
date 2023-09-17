@@ -3,7 +3,9 @@
 #include <QDebug>
 
 #include "my_canvas.h"
+#include "pixelcanvas.h"
 #include "ui_my_canvas.h"
+
 
 MyCanvas::MyCanvas(QWidget *parent) :
     QWidget(parent),
@@ -11,31 +13,26 @@ MyCanvas::MyCanvas(QWidget *parent) :
 {
     ui -> setupUi(this);
 
-    // initialize canvas pixmap
-    _pix = QPixmap(100, 100);
+    _scene = new QGraphicsScene(this);
+    ui -> graphicsView -> setScene(_scene);
+    ui -> graphicsView -> setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui -> graphicsView -> setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    // create our object and add it to the scene
+    _pixelCanvas = new PixelCanvas();
+    _scene -> addItem(_pixelCanvas);
 }
 
 MyCanvas::~MyCanvas()
 {
+    delete _pixelCanvas;
     delete ui;
 }
 
 void MyCanvas::paintEvent(QPaintEvent *event)
 {
-    // show current pixmap
-    QPainter painter(this);
-    painter.setPen(Qt::red);
-    painter.drawPixmap(0, 0, _pix);
 }
 
 void MyCanvas::mousePressEvent(QMouseEvent *event)
 {
-    // draw on pixmap
-    QPainter painter(&_pix);
-    painter.setPen(Qt::red);
-    painter.drawPoint(0, 0);
-    painter.drawPoint(1, 0);
-    painter.drawPoint(1, 1);
-    painter.drawPoint(0, 1);
-    repaint();
 }

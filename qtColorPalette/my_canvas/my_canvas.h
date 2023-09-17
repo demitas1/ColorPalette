@@ -2,6 +2,11 @@
 #define MY_CANVAS_H
 
 #include <QWidget>
+#include <QGraphicsScene>
+#include <QGraphicsView>
+
+#include "pixelcanvas.h"
+
 
 namespace Ui {
 class MyCanvas;
@@ -17,7 +22,9 @@ public:
 
 private:
     Ui::MyCanvas *ui;
-    QPixmap	_pix;
+
+    QGraphicsScene *_scene;
+    PixelCanvas *_pixelCanvas;
 
     // QWidget interface
 protected:
